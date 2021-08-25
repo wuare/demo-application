@@ -6,4 +6,4 @@
 3. 在上方文本框中输入java代码，点击按钮，查看高亮后的代码  
 
 效果图  
-![]()
+![](https://github.com/wuare/demo-application/blob/main/images/image01.png)
