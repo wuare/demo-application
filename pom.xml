@@ -7,6 +7,7 @@
   <groupId>io.github.wuare</groupId>
   <artifactId>demo-application</artifactId>
   <version>0.0.1</version>
+  <packaging>jar</packaging>
 
   <name>demo-application</name>
   <description>demo application</description>
@@ -39,5 +40,37 @@
   </dependencies>
 
   <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <appendAssemblyId>false</appendAssemblyId>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>${project.build.finalName}.lib/</classpathPrefix>
+              <mainClass>io.github.wuare.hl.JavaHighLight</mainClass>
+            </manifest>
+            <manifestEntries>
+              <url>${project.url}</url>
+              <build-time>${maven.build.timestamp}</build-time>
+              <Built-By>wuare</Built-By>
+            </manifestEntries>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>

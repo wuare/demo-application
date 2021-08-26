@@ -8,7 +8,7 @@ public class JavaHighLight {
     private final JavaGen javaGen = new JavaGen();
 
     public void start() {
-        HttpServer httpServer = new HttpServer(8088);
+        HttpServer httpServer = new HttpServer(80);
         httpServer.post("/", ((request, response) -> {
             response.addHeader("Access-Control-Allow-Origin", "*");
             response.addHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
