@@ -24,7 +24,7 @@ public class OtherClientTest {
             buf[3] = array[3];
             outputStream.write(buf);
             outputStream.flush();
-            Thread.sleep(100);
+            Thread.sleep(1000);
             System.out.println("send content: " + i);
         }
     }
