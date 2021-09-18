@@ -53,10 +53,10 @@ public class JavaHighLight {
             for (int i = 0; i < parameterTypes.length; i++) {
                 Class<?> clazz = parameterTypes[i];
                 param[i] = null;
-                if (clazz.isAssignableFrom(HttpRequest.class)) {
+                if (clazz == HttpRequest.class) {
                     param[i] = request;
                 }
-                if (clazz.isAssignableFrom(HttpResponse.class)) {
+                if (clazz == HttpResponse.class) {
                     param[i] = response;
                 }
             }
