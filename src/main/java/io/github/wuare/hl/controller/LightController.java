@@ -50,11 +50,6 @@ public class LightController {
 
     @GetMapping("/dl")
     public void dl(HttpRequest request, HttpResponse response) throws IOException {
-        response.addHeader("Content-Type", "application/octet-stream");
-        response.addHeader("Content-Disposition", "attachment; filename=1.jpg");
-        response.addHeader("Pragma", "no-cache");
-        response.addHeader("Cache-Control", "no-cache");
-        response.addHeader("Expires", "0");
         String name = ((HttpRequestLine) request.getHttpMessage().getHttpLine()).getQueryParam();
         URL url = LightController.class.getClassLoader().getResource(name);
         if (url == null) {
@@ -62,6 +57,11 @@ public class LightController {
             response.setBody("<h1>404 Not Found</h1>");
             return;
         }
+        response.addHeader("Content-Type", "application/octet-stream");
+        response.addHeader("Content-Disposition", "attachment; filename=1.jpg");
+        response.addHeader("Pragma", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        response.addHeader("Expires", "0");
         URLConnection conn = url.openConnection();
         InputStream in = conn.getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
