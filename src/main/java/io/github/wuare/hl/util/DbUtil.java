@@ -23,23 +23,7 @@ public class DbUtil {
         try {
             conn = getConn();
             PreparedStatement ps = conn.prepareStatement(sql);
-            if (param != null) {
-                for (int i = 0; i < param.length; i++) {
-                    ps.setObject(i, param[i]);
-                }
-            }
-            ResultSet rs = ps.executeQuery();
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            List<Map<String, Object>> list = new ArrayList<>();
-            while (rs.next()) {
-                Map<String, Object> map = new HashMap<>();
-                for (int i = 1; i <= columnCount; i++) {
-                    map.put(metaData.getColumnName(i), rs.getObject(i));
-                }
-                list.add(map);
-            }
-            return list;
+            return doQuery(ps, param);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -47,7 +31,32 @@ public class DbUtil {
         }
     }
 
-    public static boolean execute(String sql,  Object... param) {
+    public static List<Map<String, Object>> query(Connection conn, String sql, Object... param) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(sql);
+        return doQuery(ps, param);
+    }
+
+    private static List<Map<String, Object>> doQuery(PreparedStatement ps, Object[] param) throws SQLException {
+        if (param != null) {
+            for (int i = 0; i < param.length; i++) {
+                ps.setObject(i, param[i]);
+            }
+        }
+        ResultSet rs = ps.executeQuery();
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        List<Map<String, Object>> list = new ArrayList<>();
+        while (rs.next()) {
+            Map<String, Object> map = new HashMap<>();
+            for (int i = 1; i <= columnCount; i++) {
+                map.put(metaData.getColumnName(i), rs.getObject(i));
+            }
+            list.add(map);
+        }
+        return list;
+    }
+
+    public static boolean execute(String sql, Object... param) {
         Connection conn = null;
         try {
             conn = getConn();
@@ -63,6 +72,16 @@ public class DbUtil {
         } finally {
             IOUtil.close(conn);
         }
+    }
+
+    public static boolean execute(Connection conn, String sql, Object... param) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(sql);
+        if (param != null) {
+            for (int i = 0; i < param.length; i++) {
+                ps.setObject(i, param[i]);
+            }
+        }
+        return ps.execute();
     }
 
     public static Connection getConn() throws Exception {
