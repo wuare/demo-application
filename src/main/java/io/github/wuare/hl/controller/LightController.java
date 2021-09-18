@@ -5,7 +5,9 @@ import io.github.wuare.hl.anno.Controller;
 import io.github.wuare.hl.anno.GetMapping;
 import io.github.wuare.hl.anno.PostMapping;
 import io.github.wuare.hl.util.DbUtil;
+import top.wuare.http.define.HttpStatus;
 import top.wuare.http.proto.HttpRequest;
+import top.wuare.http.proto.HttpRequestLine;
 import top.wuare.http.proto.HttpResponse;
 import top.wuareb.highlight.gen.html.java.JavaGen;
 
@@ -46,15 +48,20 @@ public class LightController {
         response.addHeader("Location", "/home.html");
     }
 
-    @GetMapping("/dl/blog.png")
+    @GetMapping("/dl")
     public void dl(HttpRequest request, HttpResponse response) throws IOException {
         response.addHeader("Content-Type", "application/octet-stream");
         response.addHeader("Content-Disposition", "attachment; filename=1.jpg");
         response.addHeader("Pragma", "no-cache");
         response.addHeader("Cache-Control", "no-cache");
         response.addHeader("Expires", "0");
-        URL url = LightController.class.getClassLoader().getResource("blog.png");
-        assert url != null;
+        String name = ((HttpRequestLine) request.getHttpMessage().getHttpLine()).getQueryParam();
+        URL url = LightController.class.getClassLoader().getResource(name);
+        if (url == null) {
+            response.setStatus(HttpStatus.NOT_FOUND);
+            response.setBody("<h1>404 Not Found</h1>");
+            return;
+        }
         URLConnection conn = url.openConnection();
         InputStream in = conn.getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
