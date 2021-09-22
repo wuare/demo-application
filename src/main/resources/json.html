@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="">
     <head>
-        <title>java高亮</title>
+        <meta charset="utf-8">
+        <title>json格式化</title>
         <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
             function btnClick() {
                 const text = $("#txt").val();
-                const url = '/';
+                const url = '/json/format';
                 $.post(url, text, function(data) {
                     $('.gen').html(data);
                 }).fail(function(response) { 
@@ -39,6 +40,7 @@
                 height: 60px;
                 text-align: right;
                 line-height: 60px;
+                
             }
             .gen {
                 height: 300px;
