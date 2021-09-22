@@ -1,6 +1,5 @@
 package io.github.wuare.hl.controller;
 
-
 import io.github.wuare.hl.anno.Controller;
 import io.github.wuare.hl.anno.GetMapping;
 import io.github.wuare.hl.anno.PostMapping;

@@ -79,7 +79,7 @@ public class JavaHighLight {
     }
 
     public static void main(String[] args) throws Exception {
-         JavaHighLight light = new JavaHighLight();
-         light.start();
+        JavaHighLight light = new JavaHighLight();
+        light.start();
     }
 }
