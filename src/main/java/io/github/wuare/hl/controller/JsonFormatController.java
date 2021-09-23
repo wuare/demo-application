@@ -44,6 +44,9 @@ public class JsonFormatController {
         if (o instanceof String) {
             return "<span style='color: #698652;'>" + "\"" + (String) o + "\"" + "</span>";
         }
+        if (o instanceof Boolean) {
+            return "<span style='color: #097BED;'>" + "\"" + ((Boolean) o).toString() + "\"" + "</span>";
+        }
         if (o instanceof Map) {
             StringBuilder s = new StringBuilder();
             s.append("{").append("\n");

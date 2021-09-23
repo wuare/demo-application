@@ -6,9 +6,19 @@
 运行步骤  
 1. 运行示例中main方法，启动http-server服务
 2. 访问`http://ip:8088/index.html`
-3. 在上方文本框中输入java代码，点击按钮，查看高亮后的代码  
+3. 在上方文本框中输入java代码，点击按钮，查看高亮后的代码
 
+[演示地址](http://119.3.177.167/index.html)  
 效果图  
 ![](https://github.com/wuare/demo-application/blob/main/images/image01.png)
+### json格式化及高亮
+json的解析是用自己写json库  
+运行步骤  
+1. 运行示例中main方法，启动http-server服务
+2. 访问`http://ip:8088/json.html`
+3. 在上方文本框中输入json串，点击按钮，查看格式化后的json串
+
+[演示地址](http://119.3.177.167/json.html)
+
 ### 演示网址
 http://119.3.177.167/
