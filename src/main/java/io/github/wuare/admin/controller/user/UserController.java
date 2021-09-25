@@ -7,10 +7,15 @@ import io.github.wuare.admin.mock.MockUser;
 import io.github.wuare.hl.anno.Controller;
 import io.github.wuare.hl.anno.GetMapping;
 import io.github.wuare.hl.anno.PostMapping;
+import io.github.wuare.hl.util.JwtUtil;
+import io.github.wuare.hl.util.Md5Util;
+import io.github.wuare.hl.util.StringUtil;
 import top.wuare.http.define.HttpStatus;
 import top.wuare.http.proto.HttpRequest;
 import top.wuare.http.proto.HttpResponse;
 import top.wuare.json.Wson;
+
+import java.nio.charset.StandardCharsets;
 
 @Controller
 public class UserController {
@@ -21,9 +26,11 @@ public class UserController {
         String body = request.getBody();
         Wson wson = new Wson();
         LoginReq loginReq = wson.fromJson(body, LoginReq.class);
-        if (loginReq != null && "admin".equals(loginReq.getUsername())
-                && "21232f297a57a5a743894a0e4a801fc3".equals(loginReq.getPassword())) {
-            response.setBody(wson.toJson(ApiResponse.ok(new LoginVO(loginReq.getUsername()))));
+        if (loginReq != null && StringUtil.isNotEmpty(loginReq.getUsername())
+                && Md5Util.md5(loginReq.getUsername().getBytes(StandardCharsets.UTF_8))
+                .equals(loginReq.getPassword())) {
+            ApiResponse<LoginVO> res = ApiResponse.ok(new LoginVO(JwtUtil.generateToken(loginReq.getUsername(), 1)));
+            response.setBody(wson.toJson(res));
             return;
         }
         response.setStatus(HttpStatus.UNAUTHORIZED);
