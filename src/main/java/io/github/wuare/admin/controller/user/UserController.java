@@ -7,6 +7,7 @@ import io.github.wuare.admin.mock.MockUser;
 import io.github.wuare.hl.anno.Controller;
 import io.github.wuare.hl.anno.GetMapping;
 import io.github.wuare.hl.anno.PostMapping;
+import io.github.wuare.hl.anno.ResponseBody;
 import io.github.wuare.hl.util.JwtUtil;
 import io.github.wuare.hl.util.Md5Util;
 import io.github.wuare.hl.util.StringUtil;
@@ -20,8 +21,9 @@ import java.nio.charset.StandardCharsets;
 @Controller
 public class UserController {
 
+    @ResponseBody
     @PostMapping("/api/auth/login")
-    public void login(HttpRequest request, HttpResponse response) {
+    public ApiResponse<?> login(HttpRequest request, HttpResponse response) {
         response.addHeader("Content-Type", "application/json;charset=UTF-8");
         String body = request.getBody();
         Wson wson = new Wson();
@@ -29,12 +31,10 @@ public class UserController {
         if (loginReq != null && StringUtil.isNotEmpty(loginReq.getUsername())
                 && Md5Util.md5(loginReq.getUsername().getBytes(StandardCharsets.UTF_8))
                 .equals(loginReq.getPassword())) {
-            ApiResponse<LoginVO> res = ApiResponse.ok(new LoginVO(JwtUtil.generateToken(loginReq.getUsername(), 1)));
-            response.setBody(wson.toJson(res));
-            return;
+            return ApiResponse.ok(new LoginVO(JwtUtil.generateToken(loginReq.getUsername(), 1)));
         }
         response.setStatus(HttpStatus.UNAUTHORIZED);
-        response.setBody(wson.toJson(ApiResponse.error()));
+        return ApiResponse.error();
     }
 
     @PostMapping("/api/auth/logout")

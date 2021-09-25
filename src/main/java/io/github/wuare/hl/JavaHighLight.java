@@ -3,11 +3,14 @@ package io.github.wuare.hl;
 import io.github.wuare.hl.anno.Controller;
 import io.github.wuare.hl.anno.GetMapping;
 import io.github.wuare.hl.anno.PostMapping;
+import io.github.wuare.hl.anno.ResponseBody;
 import io.github.wuare.hl.util.ClassUtil;
 import top.wuare.http.HttpServer;
+import top.wuare.http.define.Constant;
 import top.wuare.http.handler.RequestHandler;
 import top.wuare.http.proto.HttpRequest;
 import top.wuare.http.proto.HttpResponse;
+import top.wuare.json.Wson;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -16,6 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class JavaHighLight {
+
+    private final Wson wson = new Wson();
 
     public void start() throws IOException {
         HttpServer httpServer = new HttpServer(80);
@@ -61,7 +66,16 @@ public class JavaHighLight {
                 }
             }
             try {
-                m.invoke(ao, param);
+                ResponseBody responseBody = m.getAnnotation(ResponseBody.class);
+                if (responseBody != null) {
+                    response.addHeader(Constant.HTTP_HEADER_CONTENT_TYPE, "application/json;charset=utf-8");
+                    Object result = m.invoke(ao, param);
+                    if (result != null) {
+                        response.setBody(wson.toJson(result));
+                    }
+                } else {
+                    m.invoke(ao, param);
+                }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
