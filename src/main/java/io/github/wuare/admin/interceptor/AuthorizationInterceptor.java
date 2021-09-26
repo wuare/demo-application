@@ -1,9 +1,9 @@
-package io.github.wuare.hl.interceptor.biz;
+package io.github.wuare.admin.interceptor;
 
 import io.github.wuare.admin.domain.bo.token.JWT;
 import io.github.wuare.admin.domain.common.ApiResponse;
 import io.github.wuare.hl.anno.Interceptor;
-import io.github.wuare.hl.anno.biz.Permission;
+import io.github.wuare.admin.anno.Permission;
 import io.github.wuare.hl.exception.JwtDecodeException;
 import io.github.wuare.hl.interceptor.WebInterceptor;
 import io.github.wuare.hl.util.JsonUtil;

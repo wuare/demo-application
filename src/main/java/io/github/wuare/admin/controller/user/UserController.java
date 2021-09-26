@@ -11,7 +11,7 @@ import io.github.wuare.hl.anno.Controller;
 import io.github.wuare.hl.anno.GetMapping;
 import io.github.wuare.hl.anno.PostMapping;
 import io.github.wuare.hl.anno.ResponseBody;
-import io.github.wuare.hl.anno.biz.Permission;
+import io.github.wuare.admin.anno.Permission;
 import io.github.wuare.hl.exception.JwtDecodeException;
 import io.github.wuare.hl.util.JsonUtil;
 import io.github.wuare.hl.util.JwtUtil;

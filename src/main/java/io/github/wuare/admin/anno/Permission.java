@@ -1,4 +1,4 @@
-package io.github.wuare.hl.anno.biz;
+package io.github.wuare.admin.anno;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
