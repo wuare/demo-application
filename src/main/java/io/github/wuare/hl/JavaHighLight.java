@@ -3,6 +3,8 @@ package io.github.wuare.hl;
 import io.github.wuare.hl.anno.*;
 import io.github.wuare.hl.filter.WebFilter;
 import io.github.wuare.hl.filter.WebFilterHolder;
+import io.github.wuare.hl.interceptor.WebInterceptor;
+import io.github.wuare.hl.interceptor.WebInterceptorHolder;
 import io.github.wuare.hl.util.ClassUtil;
 import top.wuare.http.HttpServer;
 import top.wuare.http.define.Constant;
@@ -21,6 +23,7 @@ public class JavaHighLight {
     private final Wson wson = new Wson();
 
     private final List<WebFilterHolder> filters = new ArrayList<>();
+    private final List<WebInterceptorHolder> interceptorHolders = new ArrayList<>();
 
     public void start() throws IOException {
         HttpServer httpServer = new HttpServer(80);
@@ -36,26 +39,35 @@ public class JavaHighLight {
                     return;
                 }
 
-                Annotation annotation = aClass.getAnnotation(Controller.class);
-                if (annotation == null) {
+                Interceptor interceptorAn = aClass.getAnnotation(Interceptor.class);
+                if (interceptorAn != null && WebInterceptor.class.isAssignableFrom(aClass)) {
+                    WebInterceptorHolder interceptorHolder = new WebInterceptorHolder();
+                    interceptorHolder.setWebInterceptor((WebInterceptor) aClass.getDeclaredConstructor().newInstance());
+                    interceptorHolder.setOrder(interceptorAn.order());
+                    interceptorHolders.add(interceptorHolder);
                     return;
                 }
-                Object ao = aClass.getDeclaredConstructor().newInstance();
-                Arrays.stream(aClass.getDeclaredMethods()).forEach(m -> {
-                    GetMapping getAn = m.getAnnotation(GetMapping.class);
-                    PostMapping postAn = m.getAnnotation(PostMapping.class);
-                    if (getAn != null) {
-                        httpServer.get(getAn.value(), genHandler(ao, m));
-                    }
-                    if (postAn != null) {
-                        httpServer.post(postAn.value(), genHandler(ao, m));
-                    }
-                });
+
+                Annotation annotation = aClass.getAnnotation(Controller.class);
+                if (annotation == null) {
+                    Object ao = aClass.getDeclaredConstructor().newInstance();
+                    Arrays.stream(aClass.getDeclaredMethods()).forEach(m -> {
+                        GetMapping getAn = m.getAnnotation(GetMapping.class);
+                        PostMapping postAn = m.getAnnotation(PostMapping.class);
+                        if (getAn != null) {
+                            httpServer.get(getAn.value(), genHandler(ao, m));
+                        }
+                        if (postAn != null) {
+                            httpServer.post(postAn.value(), genHandler(ao, m));
+                        }
+                    });
+                }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         });
         filters.sort(Comparator.comparingInt(WebFilterHolder::getOrder));
+        interceptorHolders.sort(Comparator.comparingInt(WebInterceptorHolder::getOrder));
         httpServer.start();
     }
 
@@ -63,6 +75,11 @@ public class JavaHighLight {
         return (request, response) -> {
             for (WebFilterHolder filter : filters) {
                 if (!filter.getWebFilter().doFilter(request, response)) {
+                    return;
+                }
+            }
+            for (WebInterceptorHolder holder : interceptorHolders) {
+                if (!holder.getWebInterceptor().preInvoke(request, response, m)) {
                     return;
                 }
             }

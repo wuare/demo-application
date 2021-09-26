@@ -11,12 +11,12 @@ import io.github.wuare.hl.anno.Controller;
 import io.github.wuare.hl.anno.GetMapping;
 import io.github.wuare.hl.anno.PostMapping;
 import io.github.wuare.hl.anno.ResponseBody;
+import io.github.wuare.hl.anno.biz.Permission;
 import io.github.wuare.hl.exception.JwtDecodeException;
 import io.github.wuare.hl.util.JsonUtil;
 import io.github.wuare.hl.util.JwtUtil;
 import io.github.wuare.hl.util.Md5Util;
 import io.github.wuare.hl.util.StringUtil;
-import top.wuare.http.define.HttpStatus;
 import top.wuare.http.proto.HttpRequest;
 import top.wuare.http.proto.HttpResponse;
 
@@ -90,6 +90,7 @@ public class UserController {
         response.setBody(MockUser.nav);
     }
 
+    @Permission
     @GetMapping("/api/role")
     public void role(HttpRequest request, HttpResponse response) {
         response.addHeader("Content-Type", "application/json;charset=UTF-8");

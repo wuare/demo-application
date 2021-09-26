@@ -1,27 +1,29 @@
-package io.github.wuare.hl.filter;
+package io.github.wuare.hl.interceptor.biz;
 
 import io.github.wuare.admin.domain.bo.token.JWT;
 import io.github.wuare.admin.domain.common.ApiResponse;
-import io.github.wuare.hl.anno.Filter;
+import io.github.wuare.hl.anno.Interceptor;
+import io.github.wuare.hl.anno.biz.Permission;
 import io.github.wuare.hl.exception.JwtDecodeException;
+import io.github.wuare.hl.interceptor.WebInterceptor;
 import io.github.wuare.hl.util.JsonUtil;
 import io.github.wuare.hl.util.JwtUtil;
 import io.github.wuare.hl.util.StringUtil;
 import top.wuare.http.define.HttpStatus;
 import top.wuare.http.proto.HttpRequest;
 import top.wuare.http.proto.HttpResponse;
-import top.wuare.http.util.HttpUtil;
 
+import java.lang.reflect.Method;
 import java.util.Date;
 
-@Filter(order = 1)
-public class AuthorizationWebFilter implements WebFilter {
+@Interceptor
+public class AuthorizationInterceptor implements WebInterceptor {
 
     @Override
-    public boolean doFilter(HttpRequest request, HttpResponse response) {
+    public boolean preInvoke(HttpRequest request, HttpResponse response, Method method) {
 
-        // 白名单
-        if (!"/api/role".equals(HttpUtil.getUrlWithOutQueryParam(request.getUrl()))) {
+        Permission permissionAn = method.getAnnotation(Permission.class);
+        if (permissionAn == null) {
             return true;
         }
 
@@ -30,6 +32,7 @@ public class AuthorizationWebFilter implements WebFilter {
             response.setStatus(HttpStatus.UNAUTHORIZED);
             return false;
         }
+
         try {
             JWT jwt = JwtUtil.decodeToken(token);
             Date now = new Date();
@@ -44,5 +47,4 @@ public class AuthorizationWebFilter implements WebFilter {
         }
         return true;
     }
-
 }
