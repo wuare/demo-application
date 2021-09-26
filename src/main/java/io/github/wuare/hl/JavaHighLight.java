@@ -17,8 +17,12 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JavaHighLight {
+
+    private static final Logger logger = Logger.getLogger(JavaHighLight.class.getName());
 
     private final Wson wson = new Wson();
 
@@ -31,6 +35,11 @@ public class JavaHighLight {
         allClass.forEach(e -> {
             try {
                 Class<?> aClass = Class.forName(e);
+
+                if (aClass.isAnnotation() || aClass.isInterface() || aClass.isEnum()) {
+                    return;
+                }
+
                 Filter filterAn = aClass.getAnnotation(Filter.class);
                 if (filterAn != null && WebFilter.class.isAssignableFrom(aClass)) {
                     WebFilterHolder filterHolder = new WebFilterHolder(
@@ -48,8 +57,8 @@ public class JavaHighLight {
                     return;
                 }
 
-                Annotation annotation = aClass.getAnnotation(Controller.class);
-                if (annotation == null) {
+                Controller controllerAn = aClass.getAnnotation(Controller.class);
+                if (controllerAn != null) {
                     Object ao = aClass.getDeclaredConstructor().newInstance();
                     Arrays.stream(aClass.getDeclaredMethods()).forEach(m -> {
                         GetMapping getAn = m.getAnnotation(GetMapping.class);
@@ -63,7 +72,7 @@ public class JavaHighLight {
                     });
                 }
             } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+                logger.log(Level.WARNING, "initialization error, " + ex.getMessage());
             }
         });
         filters.sort(Comparator.comparingInt(WebFilterHolder::getOrder));
