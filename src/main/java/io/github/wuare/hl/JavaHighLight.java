@@ -5,6 +5,7 @@ import io.github.wuare.hl.filter.WebFilter;
 import io.github.wuare.hl.filter.WebFilterHolder;
 import io.github.wuare.hl.interceptor.WebInterceptor;
 import io.github.wuare.hl.interceptor.WebInterceptorHolder;
+import io.github.wuare.hl.mixin.DocHolder;
 import io.github.wuare.hl.util.ClassUtil;
 import top.wuare.http.HttpServer;
 import top.wuare.http.define.Constant;
@@ -26,13 +27,20 @@ public class JavaHighLight {
 
     private static final Logger logger = Logger.getLogger(JavaHighLight.class.getName());
 
-    private final Wson wson = new Wson();
+    public static final JavaHighLight instance = new JavaHighLight();
 
+    public static final HttpServer httpServer = new HttpServer(80);
+
+    private final Wson wson = new Wson();
     private final List<WebFilterHolder> filters = new ArrayList<>();
     private final List<WebInterceptorHolder> interceptorHolders = new ArrayList<>();
+    private final List<DocHolder> docHolders = new ArrayList<>();
+    public List<DocHolder> getDocHolders() {
+        return docHolders;
+    }
 
     public void start() throws IOException {
-        HttpServer httpServer = new HttpServer(80);
+
         List<String> allClass = ClassUtil.getAllClass();
         allClass.forEach(e -> {
             try {
@@ -67,9 +75,11 @@ public class JavaHighLight {
                         PostMapping postAn = m.getAnnotation(PostMapping.class);
                         if (getAn != null) {
                             httpServer.get(getAn.value(), genHandler(ao, m));
+                            docHolders.add(new DocHolder(getAn.value(), "GET"));
                         }
                         if (postAn != null) {
                             httpServer.post(postAn.value(), genHandler(ao, m));
+                            docHolders.add(new DocHolder(postAn.value(), "POST"));
                         }
                     });
                 }
@@ -124,7 +134,6 @@ public class JavaHighLight {
     }
 
     public static void main(String[] args) throws Exception {
-        JavaHighLight light = new JavaHighLight();
-        light.start();
+        JavaHighLight.instance.start();
     }
 }

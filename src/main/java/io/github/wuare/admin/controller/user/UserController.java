@@ -38,8 +38,8 @@ public class UserController {
         if (loginReq != null && StringUtil.isNotEmpty(loginReq.getUsername())
                 && Md5Util.md5(loginReq.getUsername().getBytes(StandardCharsets.UTF_8))
                 .equals(loginReq.getPassword())) {
-            return ApiResponse.ok(new LoginVO(JwtUtil.generateToken(loginReq.getUsername(), 1),
-                    JwtUtil.generateToken(loginReq.getUsername(), 2)));
+            return ApiResponse.ok(new LoginVO(JwtUtil.generateToken(loginReq.getUsername(), 10),
+                    JwtUtil.generateToken(loginReq.getUsername(), 30)));
         }
         return ApiResponse.error("用户名或密码错误");
     }
@@ -66,8 +66,8 @@ public class UserController {
                 return ApiResponse.error();
             }
             // TODO 返回新token和refresh token
-            String token = JwtUtil.generateToken(jwt.getUserId(), 1);
-            String refreshToken = JwtUtil.generateToken(jwt.getUserId(), 2);
+            String token = JwtUtil.generateToken(jwt.getUserId(), 10);
+            String refreshToken = JwtUtil.generateToken(jwt.getUserId(), 30);
             RefreshTokenVO vo = new RefreshTokenVO();
             vo.setToken(token);
             vo.setRefreshToken(refreshToken);
