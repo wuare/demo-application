@@ -54,4 +54,9 @@ public class JwtUtil {
         }
         return JsonUtil.fromJson(Base64Util.decode(split[1]), JWT.class);
     }
+
+    public static boolean isExpire(long exp) {
+        Date now = new Date();
+        return now.getTime() > exp;
+    }
 }

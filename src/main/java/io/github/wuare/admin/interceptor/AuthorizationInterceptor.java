@@ -1,9 +1,9 @@
 package io.github.wuare.admin.interceptor;
 
+import io.github.wuare.admin.anno.Permission;
 import io.github.wuare.admin.domain.bo.token.JWT;
 import io.github.wuare.admin.domain.common.ApiResponse;
 import io.github.wuare.hl.anno.Interceptor;
-import io.github.wuare.admin.anno.Permission;
 import io.github.wuare.hl.exception.JwtDecodeException;
 import io.github.wuare.hl.interceptor.WebInterceptor;
 import io.github.wuare.hl.util.JsonUtil;
@@ -14,7 +14,6 @@ import top.wuare.http.proto.HttpRequest;
 import top.wuare.http.proto.HttpResponse;
 
 import java.lang.reflect.Method;
-import java.util.Date;
 
 @Interceptor
 public class AuthorizationInterceptor implements WebInterceptor {
@@ -35,8 +34,7 @@ public class AuthorizationInterceptor implements WebInterceptor {
 
         try {
             JWT jwt = JwtUtil.decodeToken(token);
-            Date now = new Date();
-            if (now.getTime() > jwt.getExp()) {
+            if (JwtUtil.isExpire(jwt.getExp())) {
                 // 过期，需要刷新token
                 response.setStatus(HttpStatus.UNAUTHORIZED);
                 return false;
