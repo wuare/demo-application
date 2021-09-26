@@ -1,9 +1,8 @@
 package io.github.wuare.hl;
 
-import io.github.wuare.hl.anno.Controller;
-import io.github.wuare.hl.anno.GetMapping;
-import io.github.wuare.hl.anno.PostMapping;
-import io.github.wuare.hl.anno.ResponseBody;
+import io.github.wuare.hl.anno.*;
+import io.github.wuare.hl.filter.WebFilter;
+import io.github.wuare.hl.filter.WebFilterHolder;
 import io.github.wuare.hl.util.ClassUtil;
 import top.wuare.http.HttpServer;
 import top.wuare.http.define.Constant;
@@ -15,12 +14,13 @@ import top.wuare.json.Wson;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class JavaHighLight {
 
     private final Wson wson = new Wson();
+
+    private final List<WebFilterHolder> filters = new ArrayList<>();
 
     public void start() throws IOException {
         HttpServer httpServer = new HttpServer(80);
@@ -28,11 +28,19 @@ public class JavaHighLight {
         allClass.forEach(e -> {
             try {
                 Class<?> aClass = Class.forName(e);
-                Object ao = aClass.getDeclaredConstructor().newInstance();
+                Filter filterAn = aClass.getAnnotation(Filter.class);
+                if (filterAn != null && WebFilter.class.isAssignableFrom(aClass)) {
+                    WebFilterHolder filterHolder = new WebFilterHolder(
+                            (WebFilter) aClass.getDeclaredConstructor().newInstance(), filterAn.order());
+                    filters.add(filterHolder);
+                    return;
+                }
+
                 Annotation annotation = aClass.getAnnotation(Controller.class);
                 if (annotation == null) {
                     return;
                 }
+                Object ao = aClass.getDeclaredConstructor().newInstance();
                 Arrays.stream(aClass.getDeclaredMethods()).forEach(m -> {
                     GetMapping getAn = m.getAnnotation(GetMapping.class);
                     PostMapping postAn = m.getAnnotation(PostMapping.class);
@@ -47,12 +55,17 @@ public class JavaHighLight {
                 System.out.println(ex.getMessage());
             }
         });
+        filters.sort(Comparator.comparingInt(WebFilterHolder::getOrder));
         httpServer.start();
     }
 
     private RequestHandler genHandler(Object ao, Method m) {
         return (request, response) -> {
-            setResponse(response);
+            for (WebFilterHolder filter : filters) {
+                if (!filter.getWebFilter().doFilter(request, response)) {
+                    return;
+                }
+            }
             Class<?>[] parameterTypes = m.getParameterTypes();
             Object[] param = new Object[parameterTypes.length];
             for (int i = 0; i < parameterTypes.length; i++) {
@@ -80,16 +93,6 @@ public class JavaHighLight {
                 throw new RuntimeException(ex);
             }
         };
-    }
-
-    private void setResponse(HttpResponse response) {
-        if (response == null) {
-            return;
-        }
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-        response.addHeader("Access-Control-Allow-Credentials", "true");
-        response.addHeader("Access-Control-Expose-Headers", "Origin, Accept-Language, Accept-Encoding,X-Forwarded-For, Connection, Accept, User-Agent, Host, Referer,Cookie, Content-Type, Cache-Control");
     }
 
     public static void main(String[] args) throws Exception {

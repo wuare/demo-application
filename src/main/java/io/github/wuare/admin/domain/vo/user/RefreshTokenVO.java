@@ -1,17 +1,9 @@
-package io.github.wuare.admin.domain.vo;
+package io.github.wuare.admin.domain.vo.user;
 
-public class LoginVO {
+public class RefreshTokenVO {
 
     private String token;
     private String refreshToken;
-
-    public LoginVO() {
-    }
-
-    public LoginVO(String token, String refreshToken) {
-        this.token = token;
-        this.refreshToken = refreshToken;
-    }
 
     public String getToken() {
         return token;
