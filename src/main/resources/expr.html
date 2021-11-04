@@ -8,6 +8,7 @@
   <script>
     function btnClick() {
       $('#gen').html('');
+      $('#gen').attr('_echarts_instance_', '');
       const chartDom = document.getElementById('gen');
       const myChart = echarts.init(chartDom);
       let option;
