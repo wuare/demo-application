@@ -8,7 +8,7 @@ public class OtherClientTest {
 
     public static void main(String[] args) throws Exception {
         Socket s = new Socket("localhost", 8088);
-
+        System.out.println(s.getSendBufferSize());
         OutputStream outputStream = s.getOutputStream();
         byte[] buf = new byte[4096];
         int i = 0;
@@ -24,7 +24,7 @@ public class OtherClientTest {
             buf[3] = array[3];
             outputStream.write(buf);
             outputStream.flush();
-            Thread.sleep(1000);
+            Thread.sleep(10);
             System.out.println("send content: " + i);
         }
     }

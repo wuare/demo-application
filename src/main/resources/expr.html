@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <title>解析表达式</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+  <script>
+    function btnClick() {
+      const chartDom = document.getElementById('gen');
+      const myChart = echarts.init(chartDom);
+      let option;
+      myChart.showLoading();
+      const text = $("#txt").val();
+      const url = '/expr/tree';
+      $.post(url, text, function(data) {
+        myChart.hideLoading();
+        myChart.setOption(
+                (option = {
+                  tooltip: {
+                    trigger: 'item',
+                    triggerOn: 'mousemove'
+                  },
+                  series: [
+                    {
+                      type: 'tree',
+                      data: [data],
+                      left: '2%',
+                      right: '2%',
+                      top: '8%',
+                      bottom: '10%',
+                      symbol: 'emptyCircle',
+                      orient: 'vertical',
+                      expandAndCollapse: true,
+                      label: {
+                        position: 'top',
+                        rotate: 0,
+                        verticalAlign: 'middle',
+                        align: 'right',
+                        fontSize: 20
+                      },
+                      leaves: {
+                        label: {
+                          position: 'bottom',
+                          rotate: 0,
+                          verticalAlign: 'middle',
+                          align: 'left'
+                        }
+                      },
+                      animationDurationUpdate: 750,
+                      initialTreeDepth: 10
+                    }
+                  ]
+                })
+        );
+        option && myChart.setOption(option);
+      }).fail(function(response) {
+        $('#gen').html(response.responseText);
+      });
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .main {
+      width: 60%;
+      margin: auto;
+    }
+    .code {
+      margin-top: 100px;
+    }
+    .code-text {
+      width: 100%;
+      padding: 3px;
+    }
+    .btn-div {
+      text-align: right;
+      line-height: 60px;
+    }
+    #gen {
+      min-height: 500px;
+      background-color: #FFFFFF;
+      color: #000000;
+    }
+  </style>
+</head>
+<body>
+<div class="main">
+  <div class="code">
+    <textarea class="code-text" name="txt" id="txt" cols="30" rows="3"></textarea>
+  </div>
+  <div class="btn-div">
+    <button onclick="btnClick()" style="padding: 6px 10px; font-weight: bold;">开始</button>
+  </div>
+  <div id="gen"></div>
+</div>
+</body>
+</html>

@@ -16,13 +16,14 @@ public class OtherServerTest {
 
     public void start() throws IOException {
         ServerSocket ss = new ServerSocket(port);
+        System.out.println(ss.getReceiveBufferSize());
         Socket socket = ss.accept();
         InputStream inputStream = socket.getInputStream();
         byte[] buf = new byte[4096];
         ByteBuffer byteBuffer = ByteBuffer.allocate(4);
         for (;;) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(2000000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
