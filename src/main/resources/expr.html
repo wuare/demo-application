@@ -7,6 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
   <script>
     function btnClick() {
+      $('#gen').html('');
       const chartDom = document.getElementById('gen');
       const myChart = echarts.init(chartDom);
       let option;
@@ -37,7 +38,7 @@
                         rotate: 0,
                         verticalAlign: 'middle',
                         align: 'right',
-                        fontSize: 20
+                        fontSize: 30
                       },
                       leaves: {
                         label: {
@@ -48,7 +49,7 @@
                         }
                       },
                       animationDurationUpdate: 750,
-                      initialTreeDepth: 10
+                      initialTreeDepth: 50
                     }
                   ]
                 })
