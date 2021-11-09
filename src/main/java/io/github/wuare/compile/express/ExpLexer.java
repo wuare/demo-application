@@ -97,7 +97,8 @@ public class ExpLexer {
                 ExpToken expToken10 = new ExpToken(line, column);
                 advance();
                 if (ch != '=') {
-                    throw new RuntimeException("syntax error, '=' is invalid, at line: " + line + ", column: " + column);
+                    throw new RuntimeException("syntax error, '=' is invalid, at line: " + expToken10.getLine()
+                            + ", column: " + expToken10.getColumn());
                 }
                 advance();
                 expToken10.setType(ExpTokenType.EQUAL);
@@ -107,7 +108,8 @@ public class ExpLexer {
                 ExpToken expToken11 = new ExpToken(line, column);
                 advance();
                 if (ch != '&') {
-                    throw new RuntimeException("syntax error, '&' is invalid, at line: " + line + ", column: " + column);
+                    throw new RuntimeException("syntax error, '&' is invalid, at line: " + expToken11.getLine()
+                            + ", column: " + expToken11.getColumn());
                 }
                 advance();
                 expToken11.setType(ExpTokenType.AND);
@@ -117,7 +119,8 @@ public class ExpLexer {
                 ExpToken expToken12 = new ExpToken(line, column);
                 advance();
                 if (ch != '|') {
-                    throw new RuntimeException("syntax error, '|' is invalid, at line: " + line + ", column: " + column);
+                    throw new RuntimeException("syntax error, '|' is invalid, at line: " + expToken12.getLine()
+                            + ", column: " + expToken12.getColumn());
                 }
                 advance();
                 expToken12.setType(ExpTokenType.OR);
