@@ -17,23 +17,24 @@ public class LangController {
         String code = request.getBody();
         Interpreter interpreter = new Interpreter(code);
         Object eval = interpreter.eval();
+        String consoleText = interpreter.getConsole().toString() + "<br/>";
         if (eval instanceof ReturnValue) {
             Object val = ((ReturnValue) eval).getVal();
             if (val == null) {
-                response.setBody("null");
+                response.setBody(consoleText + "null");
                 return;
             }
             if (val instanceof BigDecimal) {
-                response.setBody(((BigDecimal) val).toPlainString());
+                response.setBody(consoleText + ((BigDecimal) val).toPlainString());
                 return;
             }
             if (val instanceof Boolean) {
-                response.setBody(((Boolean) val).toString());
+                response.setBody(consoleText + ((Boolean) val).toString());
                 return;
             }
-            response.setBody(val.toString());
+            response.setBody(consoleText + val.toString());
             return;
         }
-        response.setBody("执行完成，无返回值");
+        response.setBody(consoleText + "执行完成，无返回值");
     }
 }
