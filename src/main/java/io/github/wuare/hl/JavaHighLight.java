@@ -29,7 +29,7 @@ public class JavaHighLight {
 
     public static final JavaHighLight instance = new JavaHighLight();
 
-    public static final HttpServer httpServer = new HttpServer(80);
+    public static final HttpServer httpServer = new HttpServer(8001);
 
     private final Wson wson = new Wson();
     private final List<WebFilterHolder> filters = new ArrayList<>();
