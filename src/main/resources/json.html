@@ -23,6 +23,10 @@
                 });
             }
 
+            function btnClean() {
+                $("#txt").val('');
+            }
+
             $(function (){
                 const txt = "{\"name\": \"wuare\", \"age\": 28, \"fat\": false, \"other\": null}";
                 $("#txt").val(txt);
@@ -71,7 +75,7 @@
                 <textarea class="code-text" name="txt" id="txt" cols="30" rows="10"></textarea>
             </div>
             <div class="btn-div">
-                <button onclick="btnClick()" style="padding: 6px 10px; font-weight: bold;">清空</button>
+                <button onclick="btnClean()" style="padding: 6px 10px; font-weight: bold;">清空</button>
                 <button onclick="btnClick()" style="padding: 6px 10px; font-weight: bold;">格式化</button>
             </div>
             <div class="gen"></div>
