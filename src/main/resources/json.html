@@ -11,6 +11,10 @@
         <script>
             function btnClick() {
                 const text = $("#txt").val();
+                if (!text) {
+                    alert("请输入内容")
+                    return false;
+                }
                 const url = '/json/format';
                 $.post(url, text, function(data) {
                     $('.gen').html(data);
@@ -18,6 +22,11 @@
                     $('.gen').html(response.responseText);
                 });
             }
+
+            $(function (){
+                const txt = "{\"name\": \"wuare\", \"age\": 28, \"fat\": false, \"other\": null}";
+                $("#txt").val(txt);
+            })
         </script>
         <style>
             * {
@@ -62,6 +71,7 @@
                 <textarea class="code-text" name="txt" id="txt" cols="30" rows="10"></textarea>
             </div>
             <div class="btn-div">
+                <button onclick="btnClick()" style="padding: 6px 10px; font-weight: bold;">清空</button>
                 <button onclick="btnClick()" style="padding: 6px 10px; font-weight: bold;">格式化</button>
             </div>
             <div class="gen"></div>
