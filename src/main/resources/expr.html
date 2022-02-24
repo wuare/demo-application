@@ -18,6 +18,10 @@
       let option;
       myChart.showLoading();
       const text = $("#txt").val();
+      if (!text) {
+        alert("请输入内容")
+        return false;
+      }
       const url = '/expr/tree';
       $.post(url, text, function(data) {
         myChart.hideLoading();

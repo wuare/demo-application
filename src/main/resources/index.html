@@ -11,6 +11,10 @@
         <script>
             function btnClick() {
                 const text = $("#txt").val();
+                if (!text) {
+                    alert("请输入内容")
+                    return false;
+                }
                 const url = '/';
                 $.post(url, text, function(data) {
                     $('.gen').html(data);
