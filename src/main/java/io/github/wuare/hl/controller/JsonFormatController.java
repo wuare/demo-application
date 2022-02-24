@@ -28,7 +28,8 @@ public class JsonFormatController {
             return;
         }
         String s = doFormat(o, "");
-        String builder = "<pre style=\"background-color: #2B2B2B; color: white; padding: 20px 20px;\">\n" +
+        String builder = "<pre style=\"background-color: #2B2B2B; color: white; padding: 20px 20px;" +
+                "font-family: 'Arial','Microsoft YaHei','黑体',sans-serif;\">\n" +
                 s +
                 "\n</pre>\n";
         response.setBody(builder);
