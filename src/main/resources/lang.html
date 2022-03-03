@@ -9,9 +9,6 @@
         <meta name="description" content="四也"/>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
         <script>
-            let txtWidth = 0;
-            let txtHeight = 0;
-
             function btnClick() {
                 const text = $("#txt").val();
                 if (!text) {
@@ -30,8 +27,8 @@
                 const txt = $("#txt");
                 txt.hide();
                 let pre = $("#div-pre");
-                pre.width(txtWidth);
-                pre.height(txtHeight);
+                pre.width(txt.width() + 6);
+                pre.height(txt.height() + 6);
                 const url = '/lang/hl';
                 const text = txt.val();
                 $.post(url, text, function(data) {
@@ -45,11 +42,6 @@
                 $("#div-pre").hide();
                 $("#txt").show();
             }
-            $(function () {
-                txtWidth = $("#txt").width() + 6;
-                txtHeight = $("#txt").height() + 6;
-                $("#div-pre").hide();
-            });
         </script>
         <style>
             * {
@@ -100,7 +92,7 @@
                 color: #698652;
             }
             .hl-num {
-                color: #5596BA;
+                color: #DCCD79;
             }
             .hl-kwd {
                 color: #C586C0;
