@@ -73,8 +73,8 @@
                 <textarea class="code-text" name="txt" id="txt" cols="30" rows="10">func demo() {
     var a = 1;
     while (a < 10) {
-        print(rec(a));
-        print("</br>");
+        print(rec(a));  // 打印函数执行结果
+        print("</br>"); // 换行
         a = a + 1;
     }
 }
@@ -86,8 +86,8 @@ func rec(num){
 		return num * rec(num-1);
 	}
 }
-var start = time();
-demo();
+var start = time(); // 当前时间毫秒数
+demo(); // 执行demo函数
 print("执行完成，耗时" + (time() - start) + "毫秒");</textarea>
             </div>
             <div class="btn-div">
