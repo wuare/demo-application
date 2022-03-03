@@ -70,16 +70,25 @@
                 内置函数：print()、time()<br>
                 示例：var a = 1; return a + 1;
                 <br><br>
-                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10">func rec(num){
+                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10">func demo() {
+    var a = 1;
+    while (a < 10) {
+        print(rec(a));
+        print("</br>");
+        a = a + 1;
+    }
+}
+
+func rec(num){
 	if(num <= 1) {
 		return 1;
 	} else {
 		return num * rec(num-1);
 	}
 }
-print("结果：" + rec(3));
-print("<br/>");
-print("执行完成");</textarea>
+var start = time();
+demo();
+print("执行完成，耗时" + (time() - start) + "毫秒");</textarea>
             </div>
             <div class="btn-div">
                 <button onclick="btnClick()" style="padding: 6px 10px; font-weight: bold;">执行</button>
