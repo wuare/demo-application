@@ -25,10 +25,12 @@
 
             function preview() {
                 const txt = $("#txt");
-                txt.hide();
                 let pre = $("#div-pre");
-                pre.width(txt.width() + 6);
-                pre.height(txt.height() + 6);
+                if (!txt.is(':hidden')) { // 如果txt已经隐藏，不设置pre的宽高
+                    pre.width(txt.width());
+                    pre.height(txt.height() + 6);
+                }
+                txt.hide();
                 const url = '/lang/hl';
                 const text = txt.val();
                 $.post(url, text, function(data) {
@@ -42,6 +44,10 @@
                 $("#div-pre").hide();
                 $("#txt").show();
             }
+
+            $(function (){
+                $("#div-pre").hide();
+            });
         </script>
         <style>
             * {
@@ -84,6 +90,7 @@
                 background-color: #2B2B2B;
                 color: #FFFFFF;
                 overflow: scroll;
+                padding: 3px;
             }
             .preview {
                 padding: 3px 10px;
