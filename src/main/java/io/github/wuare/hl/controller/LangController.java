@@ -26,7 +26,7 @@ public class LangController {
         String text = request.getBody();
         response.setBody("");
         if (text != null) {
-            response.setBody( waGen.gen(text));
+            response.setBody(waGen.gen(text));
         }
     }
 }
