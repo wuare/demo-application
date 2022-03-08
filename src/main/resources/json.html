@@ -17,9 +17,9 @@
                 }
                 const url = '/json/format';
                 $.post(url, text, function(data) {
-                    $('.gen').html(data);
+                    $('.gen-pre').html(data);
                 }).fail(function(response) { 
-                    $('.gen').html(response.responseText);
+                    $('.gen-pre').html(response.responseText);
                 });
             }
 
@@ -66,6 +66,27 @@
                 background-color: #2B2B2B;
                 color: #FFFFFF;
             }
+            .gen-pre {
+                background-color: #2B2B2B;
+                color: #FFFFFF;
+                font-family: 'Consolas', 'Microsoft YaHei','Arial', '黑体', sans-serif;
+                padding: 6px;
+            }
+            .hl-key {
+                color: #BA5F60;
+            }
+            .hl-str {
+                color: #698652;;
+            }
+            .hl-num {
+                color: #DCCD79;
+            }
+            .hl-bol {
+                color: #C586C0;
+            }
+            .hl-nil {
+                color: #9CDCFE;
+            }
         </style>
     </head>
     <body>
@@ -78,7 +99,9 @@
                 <button onclick="btnClean()" style="padding: 6px 10px; font-weight: bold;">清空</button>
                 <button onclick="btnClick()" style="padding: 6px 10px; font-weight: bold;">格式化</button>
             </div>
-            <div class="gen"></div>
+            <div class="gen">
+                <div><pre class="gen-pre"></pre></div>
+            </div>
         </div>
     </body>
 </html>

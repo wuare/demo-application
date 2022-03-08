@@ -24,29 +24,25 @@ public class JsonFormatController {
             o = wson.fromJson(text);
         } catch (CommonException e) {
             System.out.println(e.getMessage());
-            response.setBody("<pre style=\"color: #F3592A; padding: 20px 20px;\">JSON格式错误：" + e.getMessage() + "</pre>");
+            response.setBody("JSON格式错误：" + e.getMessage());
             return;
         }
         String s = doFormat(o, "");
-        String builder = "<pre style=\"background-color: #2B2B2B; color: white; padding: 20px 20px;" +
-                "font-family: 'Consolas','Arial','Microsoft YaHei','黑体',sans-serif;\">\n" +
-                s +
-                "\n</pre>\n";
-        response.setBody(builder);
+        response.setBody(s);
     }
 
     private String doFormat(Object o, String pad) {
         if (o == null) {
-            return "<span style='color: #F3592A;'>" + "null" + "</span>";
+            return "<span class='hl-nil'>" + "null" + "</span>";
         }
         if (o instanceof BigDecimal) {
-            return "<span style='color: #5596BA;'>" + ((BigDecimal) o).toPlainString() + "</span>";
+            return "<span class='hl-num'>" + ((BigDecimal) o).toPlainString() + "</span>";
         }
         if (o instanceof String) {
-            return "<span style='color: #698652;'>" + "\"" + (String) o + "\"" + "</span>";
+            return "<span class='hl-str'>" + "\"" + o + "\"" + "</span>";
         }
         if (o instanceof Boolean) {
-            return "<span style='color: #097BED;'>" + ((Boolean) o).toString() + "</span>";
+            return "<span class='hl-bol'>" + ((Boolean) o).toString() + "</span>";
         }
         if (o instanceof Map) {
             StringBuilder s = new StringBuilder();
@@ -55,7 +51,7 @@ public class JsonFormatController {
             String oldPad = pad;
             pad = pad + "    ";
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                s.append(pad).append("<span style='color: #BA5F60;'>")
+                s.append(pad).append("<span class='hl-key'>")
                         .append("\"").append(entry.getKey()).append("\"")
                         .append("</span>")
                         .append(": ")
