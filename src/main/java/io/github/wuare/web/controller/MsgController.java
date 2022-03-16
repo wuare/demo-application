@@ -5,12 +5,10 @@ import io.github.wuare.web.anno.GetMapping;
 import io.github.wuare.web.anno.PostMapping;
 import io.github.wuare.web.anno.ResponseBody;
 import top.wuare.http.proto.HttpRequest;
-import top.wuare.http.proto.HttpResponse;
 import top.wuare.json.Wson;
 
 import java.io.*;
 import java.nio.CharBuffer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
