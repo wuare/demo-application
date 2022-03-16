@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+        <title>四也</title>
+        <meta name="keywords" content="四也"/>
+        <meta name="description" content="四也"/>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+        <script>
+            function btnClick() {
+                const name = $.trim($("#msg-name").val())
+                if (!name) {
+                    alert("请输入姓名")
+                    return false;
+                }
+                if (name.length > 10) {
+                    alert("姓名不能超过10个字符")
+                    return false;
+                }
+                const text = $.trim($("#msg-cont").val())
+                if (!text) {
+                    alert("请输入留言内容")
+                    return false;
+                }
+                if (text.length > 200) {
+                    alert("留言不能超过200个字符")
+                    return false;
+                }
+                let t = JSON.stringify({name: name, text: text})
+                const url = '/msg/submit';
+                $.post(url, t, function(data) {
+                    msgList()
+                }).fail(function(response) { 
+                    $('.msg-list').html(response.responseText);
+                });
+                $("#msg-name").val('')
+                $("#msg-cont").val('')
+            }
+
+            function msgList() {
+                const url = '/msg/search';
+                $.get(url, function(res) {
+                    let cont = '';
+                    if (res && res.length > 0) {
+                        for (let i = 0; i < res.length; i++) {
+                            cont = cont + '<div class="msg-item"><hr class="hr"/><br/>' + res[i].name + '：' + res[i].text + '</div>'
+                        }
+                    }
+                    $('.msg-list').html(cont);
+                }).fail(function(response) {
+                    $('.msg-list').html(response.responseText);
+                });
+            }
+
+            $(function () {
+                msgList()
+            })
+        </script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Consolas','Arial','Microsoft YaHei','黑体',sans-serif;
+            }
+
+            .main {
+                width: 60%;
+                margin: auto;
+            }
+            .msg-text {
+                margin-top: 100px;
+            }
+            .msg-name {
+                height: 30px;
+                padding: 3px;
+                outline: none;
+            }
+            .msg-box {
+                margin-top: 20px;
+            }
+            .msg-label {
+                display: inline-block;
+                width: 80px;
+            }
+            .msg-input {
+                vertical-align: bottom;
+            }
+            .msg-cont {
+                outline: none;
+                padding: 3px;
+            }
+            .msg-btn {
+                margin-left: 90px;
+                padding: 3px 10px;
+            }
+            .msg-btn-div {
+                padding: 10px 0;
+            }
+            .msg-item {
+                padding: 6px 0;
+            }
+            .hr {
+                height: 1px;
+                border: none;
+                border-top: 1px solid rgb(220, 220, 220);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            <div class="msg-text">
+                <div class="msg-box">
+                    <label class="msg-label" for="msg-name">
+                        姓名：
+                    </label>
+                    <input id="msg-name" class="msg-name msg-input" name="msgName" placeholder="姓名"/>
+                </div>
+                <div class="msg-box">
+                    <label class="msg-label" for="msg-cont">
+                        留言内容：
+                    </label>
+                    <textarea id="msg-cont" class="msg-cont msg-input" rows="3" cols="50" placeholder="说点什么吧"></textarea>
+                </div>
+                <div class="msg-btn-div">
+                    <button class="msg-btn" onclick="btnClick()">留言</button>
+                </div>
+            </div>
+            <div class="msg-list">
+            </div>
+        </div>
+    </body>
+</html>
