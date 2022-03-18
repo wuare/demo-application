@@ -41,7 +41,14 @@ public class ServerContainer {
     }
 
     public void start() throws IOException {
+        scanAllClass();
+        filters.sort(Comparator.comparingInt(WebFilterHolder::getOrder));
+        interceptorHolders.sort(Comparator.comparingInt(WebInterceptorHolder::getOrder));
+        httpServer.setAfterInitConsumer(afterInitConsumer());
+        httpServer.start();
+    }
 
+    private void scanAllClass() throws IOException {
         List<String> allClass = ClassUtil.getAllClass();
         allClass.forEach(e -> {
             try {
@@ -88,10 +95,6 @@ public class ServerContainer {
                 logger.log(Level.WARNING, "initialization error, " + ex.getMessage());
             }
         });
-        filters.sort(Comparator.comparingInt(WebFilterHolder::getOrder));
-        interceptorHolders.sort(Comparator.comparingInt(WebInterceptorHolder::getOrder));
-        httpServer.setAfterInitConsumer(afterInitConsumer());
-        httpServer.start();
     }
 
     private Consumer<HttpServer> afterInitConsumer() {
