@@ -27,9 +27,7 @@ import java.util.logging.Logger;
 public class ServerContainer {
 
     private static final Logger logger = Logger.getLogger(ServerContainer.class.getName());
-
     public static final ServerContainer instance = new ServerContainer();
-
     public static final HttpServer httpServer = new HttpServer(8001);
 
     private final Wson wson = new Wson();
@@ -53,7 +51,6 @@ public class ServerContainer {
         allClass.forEach(e -> {
             try {
                 Class<?> aClass = Class.forName(e);
-
                 if (aClass.isAnnotation() || aClass.isInterface() || aClass.isEnum()) {
                     return;
                 }
