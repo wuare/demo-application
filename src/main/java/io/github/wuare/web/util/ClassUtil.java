@@ -61,4 +61,12 @@ public class ClassUtil {
         }
         return builder.toString();
     }
+
+    public static String getProtocol() {
+        URL url = ClassUtil.class.getResource("");
+        if (url == null) {
+            throw new RuntimeException("Can not get protocol");
+        }
+        return url.getProtocol();
+    }
 }

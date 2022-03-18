@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,7 +90,18 @@ public class ServerContainer {
         });
         filters.sort(Comparator.comparingInt(WebFilterHolder::getOrder));
         interceptorHolders.sort(Comparator.comparingInt(WebInterceptorHolder::getOrder));
+        httpServer.setAfterInitConsumer(afterInitConsumer());
         httpServer.start();
+    }
+
+    private Consumer<HttpServer> afterInitConsumer() {
+        String proto = ClassUtil.getProtocol();
+        return t -> {
+            if ("file".equals(proto)) {
+                t.getConfig().setStaticResourcePathType("classpath");
+                logger.info("检测到使用IDE运行项目，静态资源加载方式配置为classpath");
+            }
+        };
     }
 
     private RequestHandler genHandler(Object ao, Method m) {
