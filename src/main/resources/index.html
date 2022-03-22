@@ -17,9 +17,9 @@
                 }
                 const url = '/';
                 $.post(url, text, function(data) {
-                    $('.gen').html(data);
+                    $('.gen-pre').html(data);
                 }).fail(function(response) { 
-                    $('.gen').html(response.responseText);
+                    $('.gen-pre').html(response.responseText);
                 });
             }
 
@@ -55,7 +55,38 @@
                 min-height: 300px;
                 background-color: #2B2B2B;
                 color: #FFFFFF;
+            }
+            .gen-pre {
+                background-color: #2B2B2B;
+                color: #FFFFFF;
+                font-family: 'Consolas', 'Microsoft YaHei','Arial', '黑体', sans-serif;
+                padding: 20px;
                 word-wrap: break-word;
+                white-space: pre-wrap;
+            }
+            .hl-str {
+                color: #698652;
+            }
+            .hl-char {
+                color: #698652;
+            }
+            .hl-cmt {
+                color: #698652;
+            }
+            .hl-line-cmt {
+                color: #808080;
+            }
+            .hl-key {
+                color: #CC7832;
+            }
+            .hl-num {
+                color: #5596BA;
+            }
+            .hl-brace {
+                color: #FFEF28;
+            }
+            .hl-anno {
+                color: #BBB529;
             }
         </style>
     </head>
@@ -88,7 +119,7 @@ public class JavaHighlightTest {
                 <button onclick="btnClean()" style="padding: 6px 30px; font-weight: bold;">清空</button>
                 <button onclick="btnClick()" style="padding: 6px 30px; font-weight: bold;">高亮</button>
             </div>
-            <div class="gen"></div>
+            <div class="gen"><pre class="gen-pre"></pre></div>
         </div>
     </body>
 </html>
