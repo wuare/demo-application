@@ -59,8 +59,11 @@
                 });
                 // 防抖
                 t.on('input', debounce(function() {
-                    const url = '/json/format';
                     const text = $("#txt").val();
+                    if (!text) {
+                        return false;
+                    }
+                    const url = '/json/format';
                     $.post(url, text, function(data) {
                         $('.gen-pre').html(data);
                     }).fail(function(response) {
