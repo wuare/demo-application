@@ -1,0 +1,35 @@
+func 乘算口訣() {
+  var 甲 = 1;
+  while (true) {
+    if (甲 >= 10) {
+      break;
+    }
+    var 乙 = 1;
+    var _ans1 = 甲 + 乙;
+    var 丙 = _ans1;
+    while (true) {
+      if (乙 >= 丙) {
+        break;
+      }
+      var _ans2 = 甲 * 乙;
+      var 果 = _ans2;
+      if (果 >= 10) {
+        var _ans3 = 乙;
+        var _ans4 = 甲;
+        var _ans5 = 果;
+        print(_ans3,_ans4,_ans5);
+      } else {
+        var _ans6 = 乙;
+        var _ans7 = 甲;
+        var _ans8 = "得";
+        var _ans9 = 果;
+        print(_ans6, _ans7, _ans8, _ans9);
+      }
+      var _ans10 = 乙 + 1;
+      乙 = _ans10;
+    }
+    var _ans11 = 甲 + 1;
+    甲 = _ans11;
+  }
+}
+乘算口訣();
