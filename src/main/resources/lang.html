@@ -45,7 +45,7 @@
                 $("#txt").show();
             }
 
-            $(function (){
+            $(function() {
                 $("#div-pre").hide();
                 $("#txt").on('keydown', function(e) {
                     if(e.keyCode === 9){
@@ -54,9 +54,9 @@
                         const start = this.selectionStart;
                         const end = this.selectionEnd;
                         let selected = window.getSelection().toString();
-                        selected = indent + selected.replace(/\n/g,'\n'+indent);
+                        selected = indent + selected.replace(/\n/g,'\n' + indent);
                         this.value = this.value.substring(0, start) + selected + this.value.substring(end);
-                        this.setSelectionRange(start+indent.length, start+selected.length);
+                        this.setSelectionRange(start+indent.length, start + selected.length);
                     }
                 });
             });
