@@ -137,25 +137,18 @@
                 <button onclick="edit()" class="preview">编辑</button><button onclick="preview()" class="preview">预览</button>
                 <div id="div-txt">
                     <div><pre id="div-pre"></pre></div>
-                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10">func demo() {
-    var a = 1;
-    while (a < 10) {
-        print(rec(a));  // 打印rec函数执行结果
-        print("</br>"); // 换行
-        a = a + 1;
+                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10">// 打印心形
+for(var y = 1.5; y > -1.5; y = y - 0.1) {
+    for(var x= -1.5; x < 1.5; x = x + 0.05) {
+        var a = x * x + y * y - 1;
+        if((a*a*a - x*x*y*y*y) <= 0.0) {
+            print("^");
+        } else {
+            print("&nbsp;");
+        }
     }
-}
-// 计算num的阶乘
-func rec(num) {
-	if (num <= 1) {
-		return 1;
-	} else {
-		return num * rec(num-1);
-	}
-}
-var start = time(); // 当前时间毫秒数
-demo(); // 执行demo函数
-print("执行完成，耗时" + (time() - start) + "毫秒");</textarea>
+    print("<br>");
+}</textarea>
             </div>
             </div>
             <div class="btn-div">
