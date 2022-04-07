@@ -44,7 +44,7 @@ public class JsonFormatController {
             return "<span class='hl-str'>" + "\"" + o + "\"" + "</span>";
         }
         if (o instanceof Boolean) {
-            return "<span class='hl-bol'>" + ((Boolean) o).toString() + "</span>";
+            return "<span class='hl-bol'>" + o + "</span>";
         }
         if (o instanceof Map) {
             StringBuilder s = new StringBuilder();
