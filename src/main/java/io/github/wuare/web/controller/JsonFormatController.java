@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 @Controller
 public class JsonFormatController {
 
@@ -31,6 +32,7 @@ public class JsonFormatController {
         response.setBody(s);
     }
 
+    @SuppressWarnings("unchecked")
     private String doFormat(Object o, String pad) {
         if (o == null) {
             return "<span class='hl-nil'>" + "null" + "</span>";
