@@ -39,6 +39,30 @@
                 $("#txt").val('');
             }
 
+            function init() {
+                const code = 'package io.github.wuare.ot;\n' +
+                    '\n' +
+                    '/**\n' +
+                    ' * @author wuare\n' +
+                    ' */\n' +
+                    'public class JavaHighlightTest {\n' +
+                    '\n' +
+                    '    private static final int a = 1000;\n' +
+                    '\n' +
+                    '    @Deprecated\n' +
+                    '    public int test(int a, int b) {\n' +
+                    '        // 字符串\n' +
+                    '        String s = "字符串测试";\n' +
+                    '        // 数字\n' +
+                    '        double d = 1.00;\n' +
+                    '        // add two operand and return result\n' +
+                    '        return a + b;\n' +
+                    '    }\n' +
+                    '}'
+                $("#txt").val(code)
+                setTimeout(btnClick, 800)
+            }
+
             $(function () {
                 const t = $("#txt")
                 t.on('keydown', function(e) {
@@ -66,6 +90,8 @@
                         $('.gen-pre').html(response.responseText);
                     });
                 }, 800))
+
+                init()
             });
         </script>
         <style>
@@ -135,26 +161,7 @@
         <div class="main">
             <div class="code">
                 Java代码高亮<br><br>
-                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10">
-package io.github.wuare.ot;
-
-/**
- * @author wuare
- */
-public class JavaHighlightTest {
-
-    private static final int a = 1000;
-
-    @Deprecated
-    public int test(int a, int b) {
-        // 字符串
-        String s = "字符串测试";
-        // 数字
-        double d = 1.00;
-        // add two operand and return result
-        return a + b;
-    }
-}</textarea>
+                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10"></textarea>
             </div>
             <div class="btn-div">
                 <button onclick="btnClean()" style="padding: 6px 30px; font-weight: bold;">清空</button>
