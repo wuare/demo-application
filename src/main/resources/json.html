@@ -40,6 +40,10 @@
                 $("#txt").val('');
             }
 
+            function init() {
+                setTimeout(btnClick, 800)
+            }
+
             $(function () {
                 const txt = "{\"name\": \"wuare\", \"age\": 28, \"fat\": false, \"other\": null}";
                 const t = $("#txt");
@@ -70,6 +74,9 @@
                         $('.gen-pre').html(response.responseText);
                     });
                 }, 800))
+
+                // 初始化
+                init()
             })
         </script>
         <style>
