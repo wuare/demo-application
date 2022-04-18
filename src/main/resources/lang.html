@@ -45,8 +45,29 @@
                 $("#txt").show();
             }
 
+            function init() {
+                const code = '// 打印心形\n' +
+                    'func heart() {\n' +
+                    '    for(var y = 1.5; y > -1.5; y = y - 0.1) {\n' +
+                    '        for(var x = -1.5; x < 1.5; x = x + 0.05) {\n' +
+                    '            var a = x * x + y * y - 1;\n' +
+                    '            if((a*a*a - x*x*y*y*y) <= 0.0) {\n' +
+                    '                print("^");\n' +
+                    '            } else {\n' +
+                    '                print(" ");\n' +
+                    '            }\n' +
+                    '        }\n' +
+                    '        print("<br>");\n' +
+                    '    }\n' +
+                    '}\n' +
+                    'var start = time();\n' +
+                    'heart();\n' +
+                    'print("耗时：" + (time() - start) + "毫秒");'
+                $("#txt").val(code)
+            }
+
             $(function() {
-                $("#div-pre").hide();
+                $("#div-pre").hide()
                 $("#txt").on('keydown', function(e) {
                     if(e.keyCode === 9){
                         e.preventDefault();
@@ -58,7 +79,8 @@
                         this.value = this.value.substring(0, start) + selected + this.value.substring(end);
                         this.setSelectionRange(start+indent.length, start + selected.length);
                     }
-                });
+                })
+                init()
             });
         </script>
         <style>
@@ -80,8 +102,10 @@
                 margin-top: 30px;
             }
             .code-text {
+                font-family: 'Consolas','Arial','Microsoft YaHei','黑体',sans-serif;
+                font-size: 16px;
                 width: 100%;
-                height: 300px;
+                height: 350px;
                 padding: 3px;
                 outline: none;
                 border-color: rgb(133, 133, 133);
@@ -100,6 +124,8 @@
                 overflow-x: scroll;
             }
             #div-pre {
+                font-family: 'Consolas','Arial','Microsoft YaHei','黑体',sans-serif;
+                font-size: 16px;
                 background-color: #2B2B2B;
                 color: #FFFFFF;
                 overflow: scroll;
@@ -126,6 +152,9 @@
             .hl-in-func {
                 color: #F07178;
             }
+            .hl-ot-func {
+                color: #AFBF7E;
+            }
         </style>
     </head>
     <body>
@@ -141,18 +170,7 @@
                 <button onclick="edit()" class="preview">编辑</button><button onclick="preview()" class="preview">预览</button>
                 <div id="div-txt">
                     <div><pre id="div-pre"></pre></div>
-                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10">// 打印心形
-for(var y = 1.5; y > -1.5; y = y - 0.1) {
-    for(var x= -1.5; x < 1.5; x = x + 0.05) {
-        var a = x * x + y * y - 1;
-        if((a*a*a - x*x*y*y*y) <= 0.0) {
-            print("^");
-        } else {
-            print("&nbsp;");
-        }
-    }
-    print("<br>");
-}</textarea>
+                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10"></textarea>
             </div>
             </div>
             <div class="btn-div">
