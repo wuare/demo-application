@@ -68,7 +68,7 @@
                 height: 390px;
                 padding: 3px;
                 outline: none;
-                border-color: rgb(133, 133, 133);
+                border: 1px solid rgb(133, 133, 133);
                 border-top-color: rgb(246, 246, 246);
             }
             #div-pre {
@@ -89,6 +89,9 @@
             .preview:active {
                 background-color: rgb(220, 220, 220);
             }
+            .preview-left {
+                border-right: 0;
+            }
             .btn-active {
                 border-bottom-color: #FFFFFF;
             }
@@ -100,7 +103,7 @@
                 MarkDown渲染<br><br>
                 目前支持#-######标题，[]()a链接，![]()图片链接
                 <br><br><br><br><br><br>
-                <button id="btnEdit" onclick="edit()" class="preview">编辑</button><button id="btnPreview" onclick="preview()" class="preview">预览</button><button id="btnClear" onclick="btnClear()" class="preview">清空</button>
+                <button id="btnEdit" onclick="edit()" class="preview preview-left">编辑</button><button id="btnPreview" onclick="preview()" class="preview">预览</button>
                 <div id="div-txt">
                     <div id="div-pre"></div>
                 <textarea placeholder="请输入markdown文本" class="code-text" name="txt" id="txt" cols="30" rows="10"># 一级标题
