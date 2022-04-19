@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 @Controller
 public class LightController {
@@ -54,7 +55,7 @@ public class LightController {
             return;
         }
         response.addHeader("Content-Type", "application/octet-stream");
-        response.addHeader("Content-Disposition", "attachment; filename=1.jpg");
+        response.addHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(name, "UTF-8"));
         response.addHeader("Pragma", "no-cache");
         response.addHeader("Cache-Control", "no-cache");
         response.addHeader("Expires", "0");
