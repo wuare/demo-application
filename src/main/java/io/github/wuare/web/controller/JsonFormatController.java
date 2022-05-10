@@ -6,6 +6,8 @@ import top.wuare.http.proto.HttpRequest;
 import top.wuare.http.proto.HttpResponse;
 import top.wuare.json.Wson;
 import top.wuare.json.exception.CommonException;
+import top.wuareb.highlight.gen.Gen;
+import top.wuareb.highlight.gen.html.json.JsonGen;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -81,5 +83,13 @@ public class JsonFormatController {
             return s.toString();
         }
         return null;
+    }
+
+    @PostMapping("/json/hl")
+    public void hl(HttpRequest request, HttpResponse response) {
+        String text = request.getBody();
+        Gen gen = new JsonGen();
+        String r = gen.gen(text);
+        response.setBody(r);
     }
 }

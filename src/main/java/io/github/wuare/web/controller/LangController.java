@@ -1,6 +1,7 @@
 package io.github.wuare.web.controller;
 
 import io.github.wuare.web.anno.Controller;
+import io.github.wuare.web.anno.GetMapping;
 import io.github.wuare.web.anno.PostMapping;
 import top.wuare.http.proto.HttpRequest;
 import top.wuare.http.proto.HttpResponse;
@@ -28,5 +29,11 @@ public class LangController {
         if (text != null) {
             response.setBody(waGen.gen(text));
         }
+    }
+
+    @GetMapping("/lang/gc")
+    public void gc(HttpResponse response) {
+        System.gc();
+        response.setBody("OK");
     }
 }
