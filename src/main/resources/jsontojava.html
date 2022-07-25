@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+        <title>四也</title>
+        <meta name="keywords" content="四也"/>
+        <meta name="description" content="四也"/>
+        <script src="https://www.wuareb.top/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            // 防抖
+            function debounce(fn, delay) {
+                let timer = null // 借助闭包
+                return function () {
+                    if (timer) {
+                        clearTimeout(timer) // 进入该分支语句，说明当前正在一个计时过程中，并且又触发了相同事件。所以要取消当前的计时，重新开始计时
+                        timer = setTimeout(fn, delay)
+                    } else {
+                        timer = setTimeout(fn, delay) // 进入该分支说明当前并没有在计时，那么就开始一个计时
+                    }
+                }
+            }
+
+            function btnClick() {
+                const text = $("#txt").val();
+                if (!text) {
+                    alert("请输入内容")
+                    return false;
+                }
+                const url = '/json/code/java';
+                $.post(url, text, function(data) {
+                    $('.gen-pre').html(data);
+                }).fail(function(response) { 
+                    $('.gen-pre').html(response.responseText);
+                });
+            }
+
+            function btnClean() {
+                $("#txt").val('');
+            }
+
+            function init() {
+                setTimeout(btnClick, 800)
+            }
+
+            $(function () {
+                const txt = "{\"name\": \"四也\", \"age\": 800, \"bool\": false, \"arr\": [1,2,3], \"idCard\": {\"number\": \"000\"}}";
+                const t = $("#txt");
+                t.val(txt);
+                // 支持tab键
+                t.on('keydown', function(e) {
+                    if (e.keyCode === 9){
+                        e.preventDefault();
+                        const indent = '    ';
+                        const start = this.selectionStart;
+                        const end = this.selectionEnd;
+                        let selected = window.getSelection().toString();
+                        selected = indent + selected.replace(/\n/g,'\n' + indent);
+                        this.value = this.value.substring(0, start) + selected + this.value.substring(end);
+                        this.setSelectionRange(start+indent.length, start + selected.length);
+                    }
+                });
+                // 防抖
+                t.on('input', debounce(function() {
+                    const text = $("#txt").val();
+                    if (!text) {
+                        return false;
+                    }
+                    const url = '/json/code/java';
+                    $.post(url, text, function(data) {
+                        $('.gen-pre').html(data);
+                    }).fail(function(response) {
+                        $('.gen-pre').html(response.responseText);
+                    });
+                }, 800))
+
+                // 初始化
+                init()
+            })
+        </script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Consolas','Arial','Microsoft YaHei','黑体',sans-serif;
+            }
+
+            .main {
+                width: 60%;
+                margin: auto;
+            }
+            .code {
+                margin-top: 100px;
+            }
+            .code-text {
+                font-family: 'Consolas','Arial','Microsoft YaHei','黑体',sans-serif;
+                font-size: 16px;
+                width: 100%;
+                height: 300px;
+                padding: 3px;
+                outline: none;
+                border: 1px solid rgb(133, 133, 133);
+            }
+            .btn-div {
+                height: 60px;
+                text-align: right;
+                line-height: 60px;
+                
+            }
+            .gen {
+                min-height: 300px;
+                background-color: #2B2B2B;
+                color: #FFFFFF;
+            }
+            .gen-pre {
+                background-color: #2B2B2B;
+                color: #FFFFFF;
+                font-family: 'Consolas', 'Microsoft YaHei','Arial', '黑体', sans-serif;
+                font-size: 16px;
+                padding: 6px;
+                word-wrap: break-word;
+                white-space: pre-wrap;
+            }
+            .hl-str {
+                color: #698652;
+            }
+            .hl-char {
+                color: #698652;
+            }
+            .hl-cmt {
+                color: #698652;
+            }
+            .hl-line-cmt {
+                color: #808080;
+            }
+            .hl-key {
+                color: #CC7832;
+            }
+            .hl-num {
+                color: #5596BA;
+            }
+            .hl-brace {
+                color: #FFEF28;
+            }
+            .hl-anno {
+                color: #BBB529;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            <div class="code">
+                JSON生成实体类<br><br>
+                <textarea class="code-text" name="txt" id="txt" cols="30" rows="10"></textarea>
+            </div>
+            <div class="btn-div">
+                <button onclick="btnClean()" style="padding: 6px 10px; font-weight: bold;">清空</button>
+                <button onclick="btnClick()" style="padding: 6px 10px; font-weight: bold;">生成</button>
+            </div>
+            <div class="gen">
+                <div><pre class="gen-pre"></pre></div>
+            </div>
+        </div>
+    </body>
+</html>

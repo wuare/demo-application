@@ -7,6 +7,7 @@ import top.wuare.http.proto.HttpResponse;
 import top.wuare.json.Wson;
 import top.wuare.json.exception.CommonException;
 import top.wuareb.highlight.gen.Gen;
+import top.wuareb.highlight.gen.html.java.JavaGen;
 import top.wuareb.highlight.gen.html.json.JsonGen;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class JsonFormatController {
 
     private final Wson wson = new Wson();
+    private final Gen javaGen = new JavaGen();
 
     @PostMapping("/json/format")
     public void format(HttpRequest request, HttpResponse response) {
@@ -106,7 +108,7 @@ public class JsonFormatController {
             return;
         }
         AtomicInteger aIn = new AtomicInteger();
-        response.setBody(doCodeJava(o, aIn, "ClazzName"));
+        response.setBody(javaGen.gen(doCodeJava(o, aIn, "ClazzName")));
     }
 
     private String doCodeJava(Object obj, AtomicInteger aIn, String clazzName) {
@@ -137,7 +139,7 @@ public class JsonFormatController {
                     .append(";")
                     .append("\n");
         }
-        c.append("}").append("\n");
+        c.append("}").append("\n\n");
 
         for (int i = 0; i < list.size(); i++) {
             c.append(doCodeJava(list.get(i), aIn, nameList.get(i)));
