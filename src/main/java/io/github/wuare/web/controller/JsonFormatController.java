@@ -129,7 +129,19 @@ public class JsonFormatController {
                 fieldName += aIn.incrementAndGet();
                 list.add(entry.getValue());
                 nameList.add(fieldName);
-
+            }
+            if (entry.getValue() instanceof List) {
+                List<?> vl = (List<?>) entry.getValue();
+                if (!vl.isEmpty()) {
+                    if (vl.get(0) instanceof Map) {
+                        String fieldClazzName = "ClazzName" + aIn.incrementAndGet();
+                        fieldName += "<" + fieldClazzName + ">";
+                        list.add(vl.get(0));
+                        nameList.add(fieldClazzName);
+                    } else {
+                        fieldName += "<" + getFieldType(vl.get(0)) + ">";
+                    }
+                }
             }
             c.append(tab)
                     .append("private ")
