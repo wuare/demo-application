@@ -44,6 +44,22 @@
                 setTimeout(btnClick, 800)
             }
 
+            // 渲染后的数组点击事件
+            function arrClick(d) {
+                let n = $(d).next()
+                let sd = n.css('display')
+                let newSd = sd == 'none' ? '' : 'none'
+                n.css('display', newSd)
+            }
+
+            // 渲染后的对象点击事件
+            function objClick(d) {
+                let n = $(d).next()
+                let sd = n.css('display')
+                let newSd = sd == 'none' ? '' : 'none'
+                n.css('display', newSd)
+            }
+
             $(function () {
                 const txt = "{\"nil\": null, \"number\": 1001, \"bool\": false, \"array\": [100001,100002,100003], \"object\": {\"name\": \"四也\"}}";
                 const t = $("#txt");

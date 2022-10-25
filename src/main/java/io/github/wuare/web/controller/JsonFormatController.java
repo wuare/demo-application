@@ -54,7 +54,9 @@ public class JsonFormatController {
         }
         if (o instanceof Map) {
             StringBuilder s = new StringBuilder();
-            s.append("{").append("\n");
+            s.append("<span class='jn-obj-start' onclick='objClick(this)'>").append("{").append("</span>");
+            s.append("<span>");
+            s.append("\n");
             Map<String, Object> map = (Map<String, Object>) o;
             String oldPad = pad;
             pad = pad + "    ";
@@ -68,12 +70,16 @@ public class JsonFormatController {
             if (s.length() > 2) {
                 s.setLength(s.length() - 2);
             }
-            s.append("\n").append(oldPad).append("}");
+            s.append("\n");
+            s.append("</span>");
+            s.append(oldPad).append("<span>").append("}").append("</span>");
             return s.toString();
         }
         if (o instanceof List) {
             StringBuilder s = new StringBuilder();
-            s.append("[").append("\n");
+            s.append("<span class='jn-arr-start' onclick='arrClick(this)'>").append("[").append("</span>");
+            s.append("<span>");
+            s.append("\n");
             List<Object> list = (List<Object>) o;
             String oldPad = pad;
             pad = pad + "    ";
@@ -83,7 +89,9 @@ public class JsonFormatController {
             if (s.length() > 2) {
                 s.setLength(s.length() - 2);
             }
-            s.append("\n").append(oldPad).append("]");
+            s.append("\n");
+            s.append("</span>");
+            s.append(oldPad).append("<span>").append("]").append("</span>");
             return s.toString();
         }
         return null;
